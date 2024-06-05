@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { CreateNews } from "./components/create-news";
 
-interface Search_1 {
+export interface NewsResponse {
   hits: {
     title: string;
     url: string;
@@ -18,7 +18,7 @@ interface Search_1 {
 
 export function App() {
   const [text, setText] = useState("");
-  const [search, setSearch] = useState<Search_1>();
+  const [newsResponse, setNewsResponse] = useState<NewsResponse>();
 
   useEffect(() => {
     fetch("http://hn.algolia.com/api/v1/search_by_date?tags=front_page")
@@ -27,7 +27,7 @@ export function App() {
       })
       .then((data) => {
         console.log(data);
-        setSearch(data);
+        setNewsResponse(data);
       });
   }, []);
 
@@ -72,29 +72,8 @@ export function App() {
       </div>
 
       <div className="ml-6 mt-6 ">
-        {search?.hits.map((news) => {
-          return (
-            <div className="justify-left " key={news.objectID}>
-              <div className="gap-6 ">
-                {news.title || news.story_title}{" "}
-                {news.url !== undefined && (
-                  <a
-                    target="_blank"
-                    href={news.url}
-                    className="text-slate-400 text-xs place-self-center"
-                  >
-                    {new URL(news.url).hostname}
-                  </a>
-                )}
-              </div>
-
-              <div className="flex text-slate-400 text-xs mb-3">
-                {news.points} points by {news.author} -{" "}
-                {format(new Date(news.created_at), "dd.MM.y")} -{" "}
-                {news.num_comments || 0} comments
-              </div>
-            </div>
-          );
+        {newsResponse?.hits.map((news) => {
+          return <CreateNews news={news} />;
         })}
       </div>
     </div>
