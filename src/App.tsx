@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CreateNews } from "./components/create-news";
+import { CreateNews } from "./shared/components/create-news";
 
 export interface NewsResponse {
   hits: {
@@ -21,15 +21,16 @@ export function App() {
   const [newsResponse, setNewsResponse] = useState<NewsResponse>();
 
   useEffect(() => {
-    fetch("http://hn.algolia.com/api/v1/search_by_date?tags=front_page")
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setNewsResponse(data);
-      });
+    searchNews();
   }, []);
+
+  async function searchNews() {
+    const response = await fetch(
+      `http://hn.algolia.com/api/v1/search_by_date?tags=front_page&query=${text}`
+    );
+    const news = response.json();
+    setNewsResponse(await news);
+  }
 
   return (
     <div>
@@ -57,6 +58,7 @@ export function App() {
         <ul>Age</ul>
         <ul>Replies</ul>
       </div>
+
       <div className="flex justify-around ml-6 mt-5 space-x-5">
         <input
           onChange={(event) => setText(event.target.value)}
@@ -64,7 +66,7 @@ export function App() {
           className="grow rounded-sm border-2 border-slate-300 "
         />
         <button
-          onClick={() => console.log(text)}
+          onClick={() => searchNews()}
           className="rounded-full border-2 border-slate-300 pl-2 pr-2"
         >
           Search
