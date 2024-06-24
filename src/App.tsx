@@ -29,6 +29,7 @@ export function App() {
       `http://hn.algolia.com/api/v1/search_by_date?tags=front_page&query=${text}`
     );
     const news = response.json();
+    console.log(news);
     setNewsResponse(await news);
   }
 
@@ -41,7 +42,9 @@ export function App() {
         </div>
 
         <div className="flex space-x-8">
-          <ul>Top</ul>
+          <ul>
+            <a href={`/top`}>Top</a>
+          </ul>
           <ul>Ask</ul>
           <ul>Show</ul>
           <ul>Best</ul>
