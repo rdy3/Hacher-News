@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 interface CreateNewsProps {
   news: {
@@ -20,7 +21,9 @@ export function CreateNews(props: CreateNewsProps) {
   return (
     <div className="justify-left " key={news.objectID}>
       <div className="gap-6 ">
-        {news.title || news.story_title}{" "}
+        <Link to={`/news/${news.objectID}`}>
+          {news.title || news.story_title}{" "}
+        </Link>
         {news.url !== undefined && (
           <a
             target="_blank"

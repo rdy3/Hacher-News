@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App.tsx";
-import { Top } from "./shared/components/top.tsx";
+import { News } from "./shared/components/news.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -10,8 +10,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/top",
-    element: <Top />,
+    path: "/news/:newsId",
+    element: <News />,
   },
 ]);
 
