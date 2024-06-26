@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import parse from "html-react-parser";
 
 interface CommentsResponse {
   id: number;
@@ -7,7 +8,7 @@ interface CommentsResponse {
   author: string;
   title: string;
   url: string;
-  text: null;
+  text: string;
   points: number;
   parent_id: null;
   children: [
@@ -62,11 +63,11 @@ export function News() {
           <div className="pt-3 flex-row gap-3">
             <div className="pb-3 basis-1/3">{news.author}</div>
             <div className="basis-2/3 rounded border-2 border-cyan-800">
-              {news.text}
+              {parse(news.text)}
             </div>
             <div className="justify-items-end">
               {news.children.map((comments) => {
-                return <div className="pt-3 ml-10">{comments.text}</div>;
+                return <div className="pt-3 ml-10">{parse(comments.text)}</div>;
               })}
             </div>
           </div>
