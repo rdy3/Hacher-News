@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Comments } from "./comments";
+import { Comments, Comment } from "./comments";
 import { format } from "date-fns";
 
 export interface CommentsResponse {
@@ -12,27 +12,7 @@ export interface CommentsResponse {
   text: string;
   points: number;
   parent_id: null;
-  children: [
-    {
-      id: number;
-      created_at: string;
-      author: string;
-      text: string;
-      points: number;
-      parent_id: number;
-      children: [
-        {
-          id: number;
-          created_at: string;
-          author: string;
-          text: string;
-          points: number;
-          parent_id: number;
-          children: [];
-        }
-      ];
-    }
-  ];
+  children: Comment[];
 }
 [];
 
@@ -48,8 +28,8 @@ export function News() {
     const response = await fetch(
       `http://hn.algolia.com/api/v1/items/${newsId}`
     );
-    const news = response.json();
-    setNewsResponse(await news);
+    const news = await response.json();
+    setNewsResponse(news);
     console.log(news);
   }
 
@@ -59,7 +39,7 @@ export function News() {
         <div className="font-semibold text-3xl">{newsResponse?.title}</div>
         <div className="text-slate-400 text-xs mt-3">
           {newsResponse?.points} point - {newsResponse?.author} -{" "}
-          {format(new Date(newsResponse.created_at), "dd.MM.y")}
+          {format(new Date(newsResponse?.created_at || ""), "dd.MM.y")}
         </div>
       </div>
 

@@ -2,29 +2,18 @@ import { format } from "date-fns";
 import parse from "html-react-parser";
 
 export interface CommentsProps {
-  comments: [
-    {
-      id: number;
-      created_at: string;
-      author: string;
-      text: string;
-      points: number;
-      parent_id: number;
-      children: [
-        {
-          id: number;
-          created_at: string;
-          author: string;
-          text: string;
-          points: number;
-          parent_id: number;
-          children: [];
-        }
-      ];
-    }
-  ];
+  comments: Comment[];
 }
-[];
+
+export interface Comment {
+  id: number;
+  created_at: string;
+  author: string;
+  text: string;
+  points: number;
+  parent_id: number;
+  children: Comment[];
+}
 
 export function Comments(props: CommentsProps) {
   const { comments } = props;
@@ -36,11 +25,11 @@ export function Comments(props: CommentsProps) {
             <div className="pb-1 pt-2 font-semibold">{comments.author}</div>
             <div className="pb-7 ">{parse(comments.text)}</div>
             <div className="">
-              {comments.children.map((comments) => {
+              {comments.children.map((comment) => {
                 return (
                   <div>
                     <div className="pb-1 pt-2 font-semibold flex ">
-                      {comments.author} -{" "}
+                      {comment.author} -{" "}
                       <div className="flex text-slate-400 text-xs text-center">
                         {format(new Date(comments.created_at), "dd.MM.y")}
                       </div>
