@@ -39,7 +39,8 @@ export function News() {
         <div className="font-semibold text-3xl">{newsResponse?.title}</div>
         <div className="text-slate-400 text-xs mt-3">
           {newsResponse?.points} point - {newsResponse?.author} -{" "}
-          {format(new Date(newsResponse?.created_at || ""), "dd.MM.y")}
+          {newsResponse?.created_at !== undefined &&
+            format(new Date(newsResponse?.created_at), "dd.MM.y")}
         </div>
       </div>
 
