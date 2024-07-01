@@ -1,6 +1,5 @@
 import { format } from "date-fns";
 import parse from "html-react-parser";
-import { Comment } from "./comment";
 
 export interface CommentsProps {
   comments: Comment[];
@@ -29,9 +28,7 @@ export function Comments(props: CommentsProps) {
             </div>
             <div className="pb-7 ">{parse(comment.text)}</div>
             <div className="pl-5">
-              {comment.children.map(() => {
-                return <Comments comments={comment.children} />;
-              })}
+              <Comments comments={comment.children} />
             </div>
           </div>
         );
