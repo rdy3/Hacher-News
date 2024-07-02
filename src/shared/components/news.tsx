@@ -42,8 +42,9 @@ export function News() {
           {newsResponse?.created_at !== undefined &&
             format(new Date(newsResponse?.created_at), "dd.MM.y")}
         </div>
+        <div className="border-b-4 pb-4 mb-4">{newsResponse?.text}</div>
       </div>
-
+      <div className="text-3xl font-semibold pb-5">Comments</div>
       <Comments comments={newsResponse?.children || []} />
     </div>
   );
