@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Comments, Comment } from "./comments";
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 
 export interface CommentsResponse {
   id: number;
@@ -38,9 +38,9 @@ export function News() {
       <div className="gap-3 flex-auto ">
         <div className="font-semibold text-3xl">{newsResponse?.title}</div>
         <div className="text-slate-400 text-xs mt-3">
-          {newsResponse?.points} point - {newsResponse?.author} -{" "}
+          {newsResponse?.points} point - {newsResponse?.author} ago -{" "}
           {newsResponse?.created_at !== undefined &&
-            format(new Date(newsResponse?.created_at), "dd.MM.y")}
+            formatDistanceToNow(new Date(newsResponse?.created_at))}
         </div>
         <div className="border-b-4 pb-4 mb-4">{newsResponse?.text}</div>
       </div>

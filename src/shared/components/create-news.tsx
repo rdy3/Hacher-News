@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
 
 interface CreateNewsProps {
@@ -37,7 +37,7 @@ export function CreateNews(props: CreateNewsProps) {
 
       <div className="flex text-slate-400 text-xs mb-3">
         {news.points} points by {news.author} -{" "}
-        {format(new Date(news.created_at), "dd.MM.y")} -{" "}
+        {formatDistanceToNow(new Date(news.created_at))} ago -{" "}
         {news.num_comments || 0} comments
       </div>
     </div>
