@@ -19,6 +19,7 @@ export interface CommentsResponse {
 export function News() {
   const { newsId } = useParams();
   const [newsResponse, setNewsResponse] = useState<CommentsResponse>();
+  
 
   useEffect(() => {
     getNews();

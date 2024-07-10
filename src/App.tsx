@@ -19,6 +19,9 @@ export interface NewsResponse {
 export function App() {
   const [text, setText] = useState("");
   const [newsResponse, setNewsResponse] = useState<NewsResponse>();
+  const [currentFilter, setCurrentFilter] = useState<
+    "week" | "mounth" | "year" | "all"
+  >("all");
 
   useEffect(() => {
     searchNews();
@@ -28,9 +31,17 @@ export function App() {
     const response = await fetch(
       `http://hn.algolia.com/api/v1/search_by_date?tags=front_page&query=${text}`
     );
-    const news = response.json();
+    const news = await response.json();
     console.log(news);
-    setNewsResponse(await news);
+    setNewsResponse(news);
+  }
+
+  async function filterNews() {
+    const response = await fetch(
+      `http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i<${currentFilter}`
+    );
+    const news = await response.json();
+    setNewsResponse(news);
   }
 
   return (
@@ -55,11 +66,31 @@ export function App() {
 
       <div className="flex justify-center pt-10">Monday 5 September 2024</div>
 
-      <div className="flex justify-center pt-10 space-x-5">
-        <ul>Points</ul>
-        <ul>Link</ul>
-        <ul>Age</ul>
-        <ul>Replies</ul>
+      <div className="flex justify-center pt-10 space-x-5 ">
+        <button className="rounded-lg border-2 border-slate-300 pl-1 pr-1 ">
+          week
+        </button>
+
+        <button
+          onClick={() => filterNews()}
+          className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
+        >
+          mounth
+        </button>
+
+        <button
+          onClick={() => filterNews()}
+          className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
+        >
+          year
+        </button>
+
+        <button
+          onClick={() => filterNews()}
+          className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
+        >
+          all
+        </button>
       </div>
 
       <div className="flex justify-around ml-6 mt-5 space-x-5">
