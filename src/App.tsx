@@ -20,29 +20,29 @@ export function App() {
   const [text, setText] = useState("");
   const [newsResponse, setNewsResponse] = useState<NewsResponse>();
   const [currentFilter, setCurrentFilter] = useState<
-    "week" | "mounth" | "year" | "all"
+    "week" | "month" | "year" | "all"
   >("all");
 
   useEffect(() => {
     searchNews();
-  }, []);
+  }, [currentFilter]);
 
   async function searchNews() {
     const response = await fetch(
-      `http://hn.algolia.com/api/v1/search_by_date?tags=front_page&query=${text}`
+      `http://hn.algolia.com/api/v1/search_by_date?tags=front_page&query=${text}&numericFilters=created_at_i<${currentFilter}`
     );
     const news = await response.json();
     console.log(news);
     setNewsResponse(news);
   }
 
-  async function filterNews() {
-    const response = await fetch(
-      `http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i<${currentFilter}`
-    );
-    const news = await response.json();
-    setNewsResponse(news);
-  }
+  // async function filterNews() {
+  //   const response = await fetch(
+  //     `http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i<${currentFilter}`
+  //   );
+  //   const news = await response.json();
+  //   setNewsResponse(news);
+  // }
 
   return (
     <div>
@@ -67,26 +67,29 @@ export function App() {
       <div className="flex justify-center pt-10">Monday 5 September 2024</div>
 
       <div className="flex justify-center pt-10 space-x-5 ">
-        <button className="rounded-lg border-2 border-slate-300 pl-1 pr-1 ">
+        <button
+          onClick={() => setCurrentFilter("week")}
+          className="rounded-lg border-2 border-slate-300 pl-1 pr-1 "
+        >
           week
         </button>
 
         <button
-          onClick={() => filterNews()}
+          onClick={() => setCurrentFilter("month")}
           className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
         >
-          mounth
+          month
         </button>
 
         <button
-          onClick={() => filterNews()}
+          onClick={() => setCurrentFilter("year")}
           className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
         >
           year
         </button>
 
         <button
-          onClick={() => filterNews()}
+          onClick={() => setCurrentFilter("all")}
           className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
         >
           all
