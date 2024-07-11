@@ -19,9 +19,7 @@ export interface NewsResponse {
 export function App() {
   const [text, setText] = useState("");
   const [newsResponse, setNewsResponse] = useState<NewsResponse>();
-  const [currentFilter, setCurrentFilter] = useState<
-    "week" | "month" | "year" | "all"
-  >("all");
+  const [currentFilter, setCurrentFilter] = useState<string>("3000000000");
 
   useEffect(() => {
     searchNews();
@@ -29,21 +27,16 @@ export function App() {
 
   async function searchNews() {
     const response = await fetch(
-      `http://hn.algolia.com/api/v1/search_by_date?tags=front_page&query=${text}&numericFilters=created_at_i<${currentFilter}`
+      `http://hn.algolia.com/api/v1/search_by_date?tags=front_page&query=${text}&numericFilters=created_at_i>${currentFilter}`
     );
     const news = await response.json();
     console.log(news);
     setNewsResponse(news);
   }
 
-  // async function filterNews() {
-  //   const response = await fetch(
-  //     `http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i<${currentFilter}`
-  //   );
-  //   const news = await response.json();
-  //   setNewsResponse(news);
-  // }
-
+  const timestamp: string =
+    Math.floor(new Date().getTime() / 1000 - 604800) + "";
+  console.log(timestamp);
   return (
     <div>
       <header className="flex justify-around mt-4">
@@ -68,28 +61,44 @@ export function App() {
 
       <div className="flex justify-center pt-10 space-x-5 ">
         <button
-          onClick={() => setCurrentFilter("week")}
+          onClick={() =>
+            setCurrentFilter(
+              Math.floor(new Date().getTime() / 1000 - 39600) + ""
+            )
+          }
           className="rounded-lg border-2 border-slate-300 pl-1 pr-1 "
         >
           week
         </button>
 
         <button
-          onClick={() => setCurrentFilter("month")}
+          onClick={() =>
+            setCurrentFilter(
+              Math.floor(new Date().getTime() / 1000 - 2678400) + ""
+            )
+          }
           className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
         >
           month
         </button>
 
         <button
-          onClick={() => setCurrentFilter("year")}
+          onClick={() =>
+            setCurrentFilter(
+              Math.floor(new Date().getTime() / 1000 - 31536000) + ""
+            )
+          }
           className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
         >
           year
         </button>
 
         <button
-          onClick={() => setCurrentFilter("all")}
+          onClick={() =>
+            setCurrentFilter(
+              Math.floor(new Date().getTime() / 1000 - 31536000000) + ""
+            )
+          }
           className="rounded-lg border-2 border-slate-300 pl-1 pr-1"
         >
           all
